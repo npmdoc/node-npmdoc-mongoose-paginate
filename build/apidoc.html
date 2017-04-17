@@ -63,9 +63,53 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.element.mongoose-paginate.mongoose-paginate">
+            function <span class="apidocSignatureSpan"></span>mongoose-paginate
+            <span class="apidocSignatureSpan">(schema)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <a class="apidocElementLiA" href="#apidoc.element.mongoose-paginate.paginate">
             function <span class="apidocSignatureSpan">mongoose-paginate.</span>paginate
             <span class="apidocSignatureSpan">(query, options, callback)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.mongoose-paginate.toString">
+            function <span class="apidocSignatureSpan">mongoose-paginate.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.mongoose-paginate.paginate">module mongoose-paginate.paginate</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.mongoose-paginate.paginate.paginate">
+            function <span class="apidocSignatureSpan">mongoose-paginate.</span>paginate
+            <span class="apidocSignatureSpan">(query, options, callback)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.mongoose-paginate.toString">module mongoose-paginate.toString</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.mongoose-paginate.toString.toString">
+            function <span class="apidocSignatureSpan">mongoose-paginate.</span>toString
+            <span class="apidocSignatureSpan">()</span>
             </a>
 
         </li>
@@ -76,6 +120,21 @@
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.mongoose-paginate" id="apidoc.module.mongoose-paginate">module mongoose-paginate</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.mongoose-paginate.mongoose-paginate" id="apidoc.element.mongoose-paginate.mongoose-paginate">
+        function <span class="apidocSignatureSpan"></span>mongoose-paginate
+        <span class="apidocSignatureSpan">(schema)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">mongoose-paginate = function (schema) {
+    schema.statics.paginate = paginate;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 
     <h2>
@@ -180,6 +239,150 @@ Returns promise
 
 **Parameters**
 ...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.mongoose-paginate.toString" id="apidoc.element.mongoose-paginate.toString">
+        function <span class="apidocSignatureSpan">mongoose-paginate.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.mongoose-paginate.paginate" id="apidoc.module.mongoose-paginate.paginate">module mongoose-paginate.paginate</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.mongoose-paginate.paginate.paginate" id="apidoc.element.mongoose-paginate.paginate.paginate">
+        function <span class="apidocSignatureSpan">mongoose-paginate.</span>paginate
+        <span class="apidocSignatureSpan">(query, options, callback)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function paginate(query, options, callback) {
+    query   = query || {};
+    options = Object.assign({}, paginate.options, options);
+
+    var select     = options.select;
+    var sort       = options.sort;
+    var populate   = options.populate;
+    var lean       = options.lean || false;
+    var leanWithId = options.hasOwnProperty(&#x27;leanWithId&#x27;) ? options.leanWithId : true;
+
+    var limit = options.hasOwnProperty(&#x27;limit&#x27;) ? options.limit : 10;
+    var skip, offset, page;
+
+    if (options.hasOwnProperty(&#x27;offset&#x27;)) {
+        offset = options.offset;
+        skip   = offset;
+    } else if (options.hasOwnProperty(&#x27;page&#x27;)) {
+        page = options.page;
+        skip = (page - 1) * limit;
+    } else {
+        offset = 0;
+        page   = 1;
+        skip   = offset;
+    }
+
+    var promises = {
+        docs:  Promise.resolve([]),
+        count: this.count(query).exec()
+    };
+
+    if (limit) {
+        var query = this.find(query)
+                        .select(select)
+                        .sort(sort)
+                        .skip(skip)
+                        .limit(limit)
+                        .lean(lean);
+
+        if (populate) {
+            [].concat(populate).forEach(function(item) {
+                query.populate(item);
+            });
+        }
+
+        promises.docs = query.exec();
+
+        if (lean &#x26;&#x26; leanWithId) {
+            promises.docs = promises.docs.then(function(docs) {
+                docs.forEach(function(doc) {
+                    doc.id = String(doc._id);
+                });
+
+                return docs;
+            });
+        }
+    }
+
+    return Promise.props(promises)
+        .then(function(data) {
+            var result = {
+                docs:  data.docs,
+                total: data.count,
+                limit: limit
+            };
+
+            if (offset !== undefined) {
+                result.offset = offset;
+            }
+
+            if (page !== undefined) {
+                result.page  = page;
+                result.pages = Math.ceil(data.count / limit) || 1;
+            }
+
+            return result;
+        })
+        .asCallback(callback);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+```js
+var mongoose         = require(&#x27;mongoose&#x27;);
+var mongoosePaginate = require(&#x27;mongoose-paginate&#x27;);
+
+var schema = new mongoose.Schema({ /* schema definition */ });
+schema.plugin(mongoosePaginate);
+
+var Model = mongoose.model(&#x27;Model&#x27;,  schema); // Model.<span class="apidocCodeKeywordSpan">paginate</span>()
+```
+
+### Model.paginate([query], [options], [callback])
+
+Returns promise
+
+**Parameters**
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.mongoose-paginate.toString" id="apidoc.module.mongoose-paginate.toString">module mongoose-paginate.toString</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.mongoose-paginate.toString.toString" id="apidoc.element.mongoose-paginate.toString.toString">
+        function <span class="apidocSignatureSpan">mongoose-paginate.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
 

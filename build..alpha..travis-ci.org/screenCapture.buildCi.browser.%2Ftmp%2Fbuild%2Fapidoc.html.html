@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="https://github.com/edwardhotchkiss/mongoose-paginate#readme"
-
-    >mongoose-paginate (v5.0.3)</a>
+    <a href="https://github.com/edwardhotchkiss/mongoose-paginate#readme">mongoose-paginate (v5.0.3)</a>
 </h1>
 <h4>Pagination plugin for Mongoose</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.mongoose-paginate">module mongoose-paginate</a><ol>
 
@@ -152,15 +145,15 @@
     var sort       = options.sort;
     var populate   = options.populate;
     var lean       = options.lean || false;
-    var leanWithId = options.hasOwnProperty(&#x27;leanWithId&#x27;) ? options.leanWithId : true;
+    var leanWithId = options.hasOwnProperty('leanWithId') ? options.leanWithId : true;
 
-    var limit = options.hasOwnProperty(&#x27;limit&#x27;) ? options.limit : 10;
+    var limit = options.hasOwnProperty('limit') ? options.limit : 10;
     var skip, offset, page;
 
-    if (options.hasOwnProperty(&#x27;offset&#x27;)) {
+    if (options.hasOwnProperty('offset')) {
         offset = options.offset;
         skip   = offset;
-    } else if (options.hasOwnProperty(&#x27;page&#x27;)) {
+    } else if (options.hasOwnProperty('page')) {
         page = options.page;
         skip = (page - 1) * limit;
     } else {
@@ -190,7 +183,7 @@
 
         promises.docs = query.exec();
 
-        if (lean &#x26;&#x26; leanWithId) {
+        if (lean &amp;&amp; leanWithId) {
             promises.docs = promises.docs.then(function(docs) {
                 docs.forEach(function(doc) {
                     doc.id = String(doc._id);
@@ -224,13 +217,13 @@
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 ```js
-var mongoose         = require(&#x27;mongoose&#x27;);
-var mongoosePaginate = require(&#x27;mongoose-paginate&#x27;);
+var mongoose         = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 
 var schema = new mongoose.Schema({ /* schema definition */ });
 schema.plugin(mongoosePaginate);
 
-var Model = mongoose.model(&#x27;Model&#x27;,  schema); // Model.<span class="apidocCodeKeywordSpan">paginate</span>()
+var Model = mongoose.model('Model',  schema); // Model.<span class="apidocCodeKeywordSpan">paginate</span>()
 ```
 
 ### Model.paginate([query], [options], [callback])
@@ -278,15 +271,15 @@ Returns promise
     var sort       = options.sort;
     var populate   = options.populate;
     var lean       = options.lean || false;
-    var leanWithId = options.hasOwnProperty(&#x27;leanWithId&#x27;) ? options.leanWithId : true;
+    var leanWithId = options.hasOwnProperty('leanWithId') ? options.leanWithId : true;
 
-    var limit = options.hasOwnProperty(&#x27;limit&#x27;) ? options.limit : 10;
+    var limit = options.hasOwnProperty('limit') ? options.limit : 10;
     var skip, offset, page;
 
-    if (options.hasOwnProperty(&#x27;offset&#x27;)) {
+    if (options.hasOwnProperty('offset')) {
         offset = options.offset;
         skip   = offset;
-    } else if (options.hasOwnProperty(&#x27;page&#x27;)) {
+    } else if (options.hasOwnProperty('page')) {
         page = options.page;
         skip = (page - 1) * limit;
     } else {
@@ -316,7 +309,7 @@ Returns promise
 
         promises.docs = query.exec();
 
-        if (lean &#x26;&#x26; leanWithId) {
+        if (lean &amp;&amp; leanWithId) {
             promises.docs = promises.docs.then(function(docs) {
                 docs.forEach(function(doc) {
                     doc.id = String(doc._id);
@@ -350,13 +343,13 @@ Returns promise
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 ```js
-var mongoose         = require(&#x27;mongoose&#x27;);
-var mongoosePaginate = require(&#x27;mongoose-paginate&#x27;);
+var mongoose         = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 
 var schema = new mongoose.Schema({ /* schema definition */ });
 schema.plugin(mongoosePaginate);
 
-var Model = mongoose.model(&#x27;Model&#x27;,  schema); // Model.<span class="apidocCodeKeywordSpan">paginate</span>()
+var Model = mongoose.model('Model',  schema); // Model.<span class="apidocCodeKeywordSpan">paginate</span>()
 ```
 
 ### Model.paginate([query], [options], [callback])
@@ -394,3 +387,4 @@ Returns promise
     ]
 </div>
 </div>
+</body></html>
