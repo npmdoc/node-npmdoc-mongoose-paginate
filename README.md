@@ -1,4 +1,7 @@
-# api documentation for  [mongoose-paginate (v5.0.3)](https://github.com/edwardhotchkiss/mongoose-paginate#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-mongoose-paginate.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-mongoose-paginate) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-mongoose-paginate.svg)](https://travis-ci.org/npmdoc/node-npmdoc-mongoose-paginate)
+# npmdoc-mongoose-paginate
+
+#### basic api documentation for  [mongoose-paginate (v5.0.3)](https://github.com/edwardhotchkiss/mongoose-paginate#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-mongoose-paginate.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-mongoose-paginate) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-mongoose-paginate.svg)](https://travis-ci.org/npmdoc/node-npmdoc-mongoose-paginate)
+
 #### Pagination plugin for Mongoose
 
 [![NPM](https://nodei.co/npm/mongoose-paginate.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/mongoose-paginate)
@@ -83,7 +86,8 @@
     "scripts": {
         "test": "mocha tests/*.js --timeout 5000"
     },
-    "version": "5.0.3"
+    "version": "5.0.3",
+    "bin": {}
 }
 ```
 
